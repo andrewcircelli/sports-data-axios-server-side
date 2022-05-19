@@ -22,6 +22,16 @@ app.get("/api", (req, res) => {
   res.send("API Pending");
 });
 
+app.use((req, res) => {
+  const err = new Error("Page Not Found!");
+  err.status = 404;
+  res.json({
+    err: {
+      message: err.message,
+    },
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`API Pending at PORT ${PORT}`);
 });
