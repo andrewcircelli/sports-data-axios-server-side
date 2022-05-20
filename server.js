@@ -17,16 +17,20 @@ const app = express();
 
 // Services
 // =============================================================
+const apiKey = process.env.SPORTSDATA_KEY;
+const generatePreGameOddsByDateURL = (date, apiKey) => {
+  return `https://api.sportsdata.io/v3/mlb/odds/json/GameOddsByDate/${date}?key=${apiKey}`;
+};
 const getPreGameOddsByDate = async (req, res) => {
   const { data } = await axios.get(
-    "https://api.sportsdata.io/v3/mlb/odds/json/GameOddsByDate/2022-05-20?key=7875bd8edadf408087c468444e78bd63"
+    generatePreGameOddsByDateURL(req.params.date, apiKey)
   );
   res.status(200).send(data);
 };
 
 // Routes
 // =============================================================
-app.get("/MLB", getPreGameOddsByDate);
+app.get("/MLB/:date", getPreGameOddsByDate);
 
 app.get("/ping", (req, res) => {
   res.status(200).send("successfull ping");
