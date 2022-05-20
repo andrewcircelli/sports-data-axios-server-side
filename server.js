@@ -1,6 +1,9 @@
 // Dependencies
 // =============================================================
 const express = require("express");
+const dotenv = require("dotenv");
+dotenv.config();
+const axios = require("axios");
 
 // Express app
 // =============================================================
@@ -9,17 +12,24 @@ const app = express();
 
 // Express app - data parsing
 // =============================================================
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: true }));
+
+// Services
+// =============================================================
+const getPreGameOddsByDate = async (req, res) => {
+  const { data } = await axios.get(
+    "https://api.sportsdata.io/v3/mlb/odds/json/GameOddsByDate/2022-05-20?key=7875bd8edadf408087c468444e78bd63"
+  );
+  res.status(200).send(data);
+};
 
 // Routes
 // =============================================================
-app.get("/", (req, res) => {
-  res.send("Home Page");
-});
+app.get("/MLB", getPreGameOddsByDate);
 
-app.get("/api", (req, res) => {
-  res.send("API Pending");
+app.get("/ping", (req, res) => {
+  res.status(200).send("successfull ping");
 });
 
 app.use((req, res) => {
@@ -33,5 +43,5 @@ app.use((req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`API Pending at PORT ${PORT}`);
+  console.log(`app is now listening at PORT: ${PORT}`);
 });
