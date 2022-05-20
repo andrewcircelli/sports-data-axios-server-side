@@ -21,6 +21,12 @@ const sportsdata = require("./services");
 
 // Routes
 // =============================================================
+app.get("/", (req, res) => {
+  res
+    .status(200)
+    .json({ message: "Navigate to /MLB/YYYY-MM-DD for pregame odds" });
+});
+
 app.get("/MLB/:date", sportsdata.getPreGameOddsByDate);
 
 app.get("/ping", (req, res) => {
