@@ -17,20 +17,11 @@ const app = express();
 
 // Services
 // =============================================================
-const apiKey = process.env.SPORTSDATA_KEY;
-const generatePreGameOddsByDateURL = (date, apiKey) => {
-  return `https://api.sportsdata.io/v3/mlb/odds/json/GameOddsByDate/${date}?key=${apiKey}`;
-};
-const getPreGameOddsByDate = async (req, res) => {
-  const { data } = await axios.get(
-    generatePreGameOddsByDateURL(req.params.date, apiKey)
-  );
-  res.status(200).send(data);
-};
+const sportsdata = require("./services");
 
 // Routes
 // =============================================================
-app.get("/MLB/:date", getPreGameOddsByDate);
+app.get("/MLB/:date", sportsdata.getPreGameOddsByDate);
 
 app.get("/ping", (req, res) => {
   res.status(200).send("successfull ping");
